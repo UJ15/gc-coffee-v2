@@ -1,11 +1,9 @@
-package com.kdt.prgrms.gccoffee;
+package com.kdt.prgrms.gccoffee.controller;
 
 import com.google.gson.Gson;
-import com.kdt.prgrms.gccoffee.controller.ProductRestController;
 import com.kdt.prgrms.gccoffee.dto.CreateProductRequest;
 import com.kdt.prgrms.gccoffee.models.Product;
 import com.kdt.prgrms.gccoffee.service.ProductService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
