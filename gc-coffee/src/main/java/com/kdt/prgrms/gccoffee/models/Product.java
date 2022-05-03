@@ -13,12 +13,13 @@ public class Product {
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Product(long productId, String productName, Category category, long price) {
+    public Product(String productName, Category category, long price, String description) {
 
-        this.productId = productId;
+        this.productId = 0;
         this.productName = productName;
         this.category = category;
         this.price = price;
+        this.description = description;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
