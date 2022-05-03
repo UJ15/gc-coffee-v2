@@ -3,9 +3,9 @@ package com.kdt.prgrms.gccoffee;
 import com.google.gson.Gson;
 import com.kdt.prgrms.gccoffee.controller.ProductRestController;
 import com.kdt.prgrms.gccoffee.dto.CreateProductRequest;
-import com.kdt.prgrms.gccoffee.models.Category;
 import com.kdt.prgrms.gccoffee.models.Product;
 import com.kdt.prgrms.gccoffee.service.ProductService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ public class ProductRestControllerTest {
 
             String url = "/api/v1/products";
 
-            CreateProductRequest requestObject = new CreateProductRequest("a", null, 1);
+            CreateProductRequest requestObject = new CreateProductRequest("a", "Hello!!", 1, "");
 
             MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(url)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -62,7 +62,7 @@ public class ProductRestControllerTest {
 
             String url = "/api/v1/products";
 
-            CreateProductRequest requestObject = new CreateProductRequest("a", Category.COFFEE_BEAN_PACKAGE, -1);
+            CreateProductRequest requestObject = new CreateProductRequest("a", "COFFEE_BEAN_PACKAGE", -1, "");
 
             MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(url)
                             .contentType(MediaType.APPLICATION_JSON)
@@ -82,7 +82,7 @@ public class ProductRestControllerTest {
 
             String url = "/api/v1/products";
 
-            CreateProductRequest requestObject = new CreateProductRequest("", Category.COFFEE_BEAN_PACKAGE, -1);
+            CreateProductRequest requestObject = new CreateProductRequest("", "COFFEE_BEAN_PACKAGE", -1, "");
 
             MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(url)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -102,14 +102,14 @@ public class ProductRestControllerTest {
 
             String url = "/api/v1/products";
 
-            CreateProductRequest requestObject = new CreateProductRequest("a", Category.COFFEE_BEAN_PACKAGE, 1000);
+            CreateProductRequest requestObject = new CreateProductRequest("a", "COFFEE_BEAN_PACKAGE", 1000, "");
 
             MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(url)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(gson.toJson(requestObject));
 
             @Test
-            @DisplayName("Ok를 반환하고 서비스의 create메소드를 호출한다.")
+            @DisplayName("Ok를 반환하고 서비스의 create 메소드를 호출한다.")
             void itReturnOkAndCallServiceCreate() throws Exception {
 
                 mockMvc.perform(request)
@@ -119,7 +119,4 @@ public class ProductRestControllerTest {
             }
         }
     }
-
-
-
 }

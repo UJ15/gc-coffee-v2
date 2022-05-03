@@ -1,6 +1,9 @@
 package com.kdt.prgrms.gccoffee.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.kdt.prgrms.gccoffee.dto.validation.ValueOfEnum;
 import com.kdt.prgrms.gccoffee.models.Category;
+import com.kdt.prgrms.gccoffee.models.Product;
 import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.Min;
@@ -11,12 +14,14 @@ public class CreateProductRequest {
     @NotBlank
     private final String productName;
     @NonNull
-    private final Category category;
+    @ValueOfEnum(enumClass = Category.class)
+    private final String category;
     @Min(0)
     private final long price;
     private final String description;
 
-    public CreateProductRequest(@NotBlank String productName, @NonNull Category category, long price, String description) {
+    @JsonCreator
+    public CreateProductRequest(@NotBlank String productName, @NonNull String category, long price, String description) {
 
         this.productName = productName;
         this.category = category;
@@ -24,12 +29,9 @@ public class CreateProductRequest {
         this.description = description;
     }
 
-    public CreateProductRequest(@NotBlank String productName, @NonNull Category category, long price) {
+    public Product toDomain() {
 
-        this.productName = productName;
-        this.category = category;
-        this.price = price;
-        this.description = "";
+        return new Product(this.productName, Category.valueOf(this.category), this.price, this.description);
     }
 
     @NonNull
@@ -41,7 +43,7 @@ public class CreateProductRequest {
     @NonNull
     public Category getCategory() {
 
-        return category;
+        return Category.valueOf(category);
     }
 
     public long getPrice() {
