@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProductRestController.class)
@@ -114,6 +115,28 @@ public class ProductRestControllerTest {
                         .andExpect(status().isOk());
 
                 verify(productService).createProduct(any(Product.class));
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("getAllProducts 메서드는")
+    class DescribeGetAllProducts {
+
+        @Nested
+        @DisplayName("요청을 받으면")
+        class ContextCreateProductRequest {
+
+            String url = "/api/v1/products";
+
+            @Test
+            @DisplayName("Ok를 반환하고 서비스의 getProducts 메소드를 호출한다.")
+            void itReturnOkAndCallServiceGetProducts() throws Exception {
+
+                mockMvc.perform(get(url))
+                        .andExpect(status().isOk());
+
+                verify(productService).getProducts();
             }
         }
     }

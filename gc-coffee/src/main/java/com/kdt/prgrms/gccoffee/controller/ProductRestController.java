@@ -2,13 +2,13 @@ package com.kdt.prgrms.gccoffee.controller;
 
 
 import com.kdt.prgrms.gccoffee.dto.CreateProductRequest;
+import com.kdt.prgrms.gccoffee.dto.ProductResponse;
+import com.kdt.prgrms.gccoffee.models.Product;
 import com.kdt.prgrms.gccoffee.service.ProductService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -26,4 +26,14 @@ public class ProductRestController {
 
         productService.createProduct(request.toDomain());
     }
+
+    @GetMapping
+    public List<ProductResponse> getAllProducts() {
+
+        return productService.getProducts().stream()
+                .map(ProductResponse::from)
+                .toList();
+    }
+
+
 }
