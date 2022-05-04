@@ -35,6 +35,17 @@ public class Product {
         this.updatedAt = updatedAt;
     }
 
+    public static Product toEntity(Long id, Product product) {
+
+        return new Product(id,
+                product.getProductName(),
+                product.getCategory(),
+                product.getPrice(),
+                product.getDescription(),
+                product.getCreatedAt(),
+                product.getUpdatedAt());
+    }
+
     public long getProductId() {
 
         return productId;
