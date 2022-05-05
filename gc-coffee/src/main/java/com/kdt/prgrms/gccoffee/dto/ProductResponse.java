@@ -38,39 +38,4 @@ public class ProductResponse {
                 product.getUpdatedAt()
         );
     }
-
-    public long getProductId() {
-
-        return productId;
-    }
-
-    public String getProductName() {
-
-        return productName;
-    }
-
-    public Category getCategory() {
-
-        return category;
-    }
-
-    public long getPrice() {
-
-        return price;
-    }
-
-    public String getDescription() {
-
-        return description;
-    }
-
-    public LocalDateTime getCreatedAt() {
-
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-
-        return updatedAt;
-    }
 }

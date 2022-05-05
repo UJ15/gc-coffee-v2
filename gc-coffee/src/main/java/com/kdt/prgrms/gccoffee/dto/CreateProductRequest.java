@@ -33,26 +33,4 @@ public class CreateProductRequest {
 
         return new Product(this.productName, Category.valueOf(this.category), this.price, this.description);
     }
-
-    @NonNull
-    public String getProductName() {
-
-        return productName;
-    }
-
-    @NonNull
-    public Category getCategory() {
-
-        return Category.valueOf(category);
-    }
-
-    public long getPrice() {
-
-        return price;
-    }
-
-    public String getDescription() {
-
-        return description;
-    }
 }
