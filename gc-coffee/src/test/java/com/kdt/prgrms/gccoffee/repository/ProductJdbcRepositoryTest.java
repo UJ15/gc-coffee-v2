@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.util.List;
+
 @SpringBootTest
 @ContextConfiguration(classes = ProductJdbcRepositoryTest.Config.class)
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
@@ -67,6 +69,26 @@ public class ProductJdbcRepositoryTest {
 
                 Assertions.assertThat(productCheck.getProductName()).isEqualTo("coffee");
                 Assertions.assertThat(productCheck.getPrice()).isEqualTo(1000);
+            }
+        }
+    }
+
+    @Nested
+    @Order(2)
+    @DisplayName("findAll 메서드는")
+    class DescribeFindAllMethod {
+
+        @Nested
+        @DisplayName("호출되면")
+        class ContextCallThis {
+
+            @Test
+            @DisplayName("해당 product를 Database에 저장한다.")
+            void itSaveProduct() {
+
+                List<Product> products = productJdbcRepository.findAll();
+
+                Assertions.assertThat(products.size()).isNotEqualTo(0);
             }
         }
     }

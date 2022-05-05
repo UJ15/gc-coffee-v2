@@ -28,6 +28,6 @@ public class ProductService {
 
     public List<Product> getProducts() {
 
-        return List.of();
+        return productRepository.findAll();
     }
 }

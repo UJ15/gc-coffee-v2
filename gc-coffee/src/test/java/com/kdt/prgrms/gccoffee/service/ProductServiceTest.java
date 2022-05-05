@@ -1,5 +1,6 @@
 package com.kdt.prgrms.gccoffee.service;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.kdt.prgrms.gccoffee.models.Category;
 import com.kdt.prgrms.gccoffee.models.Product;
 import com.kdt.prgrms.gccoffee.repository.ProductRepository;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -66,5 +68,30 @@ public class ProductServiceTest {
         }
     }
 
+    @Nested
+    @DisplayName("서비스의 createProduct 메서드는")
+    class DescribeGetProducts {
 
+        @Nested
+        @DisplayName("호출이 되면")
+        class ContextReceiveGetRequest {
+
+            Product firstProduct = new Product(1, "aa", Category.COFFEE_BEAN_PACKAGE,  1, "", LocalDateTime.now(), LocalDateTime.now());
+            Product secondProduct = new Product(1, "aa", Category.COFFEE_BEAN_PACKAGE,  1, "", LocalDateTime.now(), LocalDateTime.now());
+
+            List<Product> products = List.of(firstProduct, secondProduct);
+
+            @Test
+            @DisplayName("repository의 findAll메서드를 호출하고 해당 결과를 반환한다.")
+            void itThrowIllegalArgumentException() {
+
+                when(productRepository.findAll()).thenReturn(products);
+
+                List<Product> productsCheck = productService.getProducts();
+
+                verify(productRepository).findAll();
+                Assertions.assertThat(products).isEqualTo(productsCheck);
+            }
+        }
+    }
 }

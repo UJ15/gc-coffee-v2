@@ -1,6 +1,7 @@
+
 create table products
 (
-    product_id    bigint   not null primary key auto_increment,
+    product_id    bigint   auto_increment primary key,
     product_name  varchar(20)  not null,
     category      varchar(50)  not null,
     price         bigint       not null,

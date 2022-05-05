@@ -1,11 +1,13 @@
 package com.kdt.prgrms.gccoffee.repository;
 
 import com.kdt.prgrms.gccoffee.models.Product;
+import com.kdt.prgrms.gccoffee.repository.rowmapper.ProductRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -13,6 +15,7 @@ public class ProductJdbcRepository implements ProductRepository {
 
     private static final String INSERT_SQL = "INSERT INTO products(product_id, product_name, category, price, description, created_at, updated_at)"
             + "VALUES(:productId, :productName, :category, :price, :description, :createdAt, :updatedAt)";
+    private static final String SELECT_ALL_SQL = "SELECT * FROM products";
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -31,6 +34,12 @@ public class ProductJdbcRepository implements ProductRepository {
             return insertProduct(product);
         }
         return updateProduct(product);
+    }
+
+    @Override
+    public List<Product> findAll() {
+
+        return jdbcTemplate.query("SELECT * FROM products", new ProductRowMapper());
     }
 
     private Product insertProduct(Product product) {
