@@ -16,6 +16,7 @@ public class ProductJdbcRepository implements ProductRepository {
     private static final String INSERT_SQL = "INSERT INTO products(product_id, product_name, category, price, description, created_at, updated_at)"
             + "VALUES(:productId, :productName, :category, :price, :description, :createdAt, :updatedAt)";
     private static final String SELECT_ALL_SQL = "SELECT * FROM products";
+    private static final String LAST_ID_SQL = "SELECT LAST_INSERT_ID()";
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -39,7 +40,7 @@ public class ProductJdbcRepository implements ProductRepository {
     @Override
     public List<Product> findAll() {
 
-        return jdbcTemplate.query("SELECT * FROM products", new ProductRowMapper());
+        return jdbcTemplate.query(SELECT_ALL_SQL, new ProductRowMapper());
     }
 
     private Product insertProduct(Product product) {
@@ -50,7 +51,7 @@ public class ProductJdbcRepository implements ProductRepository {
             throw new IllegalStateException();
         }
 
-        Long id = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Collections.emptyMap(), Long.class);
+        Long id = jdbcTemplate.queryForObject(LAST_ID_SQL, Collections.emptyMap(), Long.class);
 
         return Product.toEntity(id, product);
     }
