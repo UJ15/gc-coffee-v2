@@ -1,7 +1,6 @@
 package com.kdt.prgrms.gccoffee.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.kdt.prgrms.gccoffee.dto.validation.ValueOfEnum;
 import com.kdt.prgrms.gccoffee.models.Category;
 import com.kdt.prgrms.gccoffee.models.Product;
 import org.springframework.lang.NonNull;
@@ -14,14 +13,13 @@ public class CreateProductRequest {
     @NotBlank
     private final String productName;
     @NonNull
-    @ValueOfEnum(enumClass = Category.class)
-    private final String category;
+    private final Category category;
     @Min(0)
     private final long price;
     private final String description;
 
     @JsonCreator
-    public CreateProductRequest(@NotBlank String productName, @NonNull String category, long price, String description) {
+    public CreateProductRequest(@NotBlank String productName, @NonNull Category category, long price, String description) {
 
         this.productName = productName;
         this.category = category;
@@ -31,6 +29,6 @@ public class CreateProductRequest {
 
     public Product toDomain() {
 
-        return new Product(this.productName, Category.valueOf(this.category), this.price, this.description);
+        return new Product(this.productName, this.category, this.price, this.description);
     }
 }

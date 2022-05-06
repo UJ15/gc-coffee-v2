@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.kdt.prgrms.gccoffee.models.Order;
 import com.kdt.prgrms.gccoffee.models.OrderItem;
 import com.kdt.prgrms.gccoffee.models.OrderStatus;
-import com.kdt.prgrms.gccoffee.models.UserEmail;
 
 
 import javax.validation.constraints.Email;
@@ -29,7 +28,7 @@ public class CreateOrderRequest {
 
     public Order toDomain() {
 
-        return new Order(new UserEmail(this.email),
+        return new Order(this.email,
                 this.address,
                 this.postcode,
                 this.orderItems,
