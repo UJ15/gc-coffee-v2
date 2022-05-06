@@ -40,6 +40,16 @@ public class ProductJdbcRepository implements ProductRepository {
         return jdbcTemplate.query(SELECT_ALL_SQL, new ProductRowMapper());
     }
 
+    @Override
+    public void deleteById(long id) {
+
+        int update = jdbcTemplate.update("DELETE FROM products WHERE product_id = :productId", Collections.singletonMap("productId", id));
+
+        if (update != 1){
+            throw new IllegalStateException();
+        }
+    }
+
     private Product insertProduct(Product product) {
 
         int update = jdbcTemplate.update(INSERT_SQL, toParamMap(product));

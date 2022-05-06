@@ -24,6 +24,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -237,6 +238,45 @@ public class ProductRestControllerTest {
                         .andExpect(status().isOk())
                         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                         .andExpect(content().json(expected));
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("deleteById 메서드는")
+    class DescribeDeleteById {
+
+//        @Nested
+//        @DisplayName("존재할 수 없는 id를 인자로 받게되면")
+//        class ContextReceiveNotNonexistentId {
+//
+//            String url = "/api/v1/products/-1";
+//
+//            @Test
+//            @DisplayName("잘못된 인자 에러를 반환한다.")
+//            void itReturnIllegalArgument() throws Exception {
+//
+//                mockMvc.perform(delete(url))
+//                        .andExpect(status().isBadRequest());
+//            }
+//        }
+
+        @Nested
+        @DisplayName("저장되어있는 id를 인자로 받게되면")
+        class ContextReceiveSavedId {
+
+            long inputId = 1;
+            String url = "/api/v1/products/1";
+
+            @Test
+            @DisplayName("ok상태를 반환하고 service의 deleteById메서드를 호출한다.")
+            void itReturnOkAndCallServiceDelete() throws Exception {
+
+
+                mockMvc.perform(delete(url))
+                        .andExpect(status().isOk());
+
+                verify(productService).deleteById(inputId);
             }
         }
     }

@@ -58,4 +58,10 @@ public class ProductRestController {
                 .map(ProductResponse::from)
                 .toList();
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id) {
+
+        productService.deleteById(id);
+    }
 }
