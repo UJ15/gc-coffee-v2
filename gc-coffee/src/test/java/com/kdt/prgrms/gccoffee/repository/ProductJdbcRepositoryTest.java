@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class ProductJdbcRepositoryTest {
             return new ProductJdbcRepository(namedParameterJdbcTemplate);
         }
     }
+
     @Autowired
     private ProductJdbcRepository productJdbcRepository;
 

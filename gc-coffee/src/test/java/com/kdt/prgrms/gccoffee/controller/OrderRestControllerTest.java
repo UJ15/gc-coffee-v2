@@ -39,7 +39,7 @@ public class OrderRestControllerTest {
     class DescribeCreateOrder {
 
         @Nested
-        @DisplayName("해당 api로 post여청을 받으면")
+        @DisplayName("해당 api로 post요청을 받으면")
         class ContextCallServiceCreateOrder {
 
             String url = "/api/v1/orders";
