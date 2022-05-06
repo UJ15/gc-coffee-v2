@@ -32,7 +32,6 @@ public class ProductRestController {
     public List<ProductResponse> getAllProducts(@RequestParam @Nullable Category category, @RequestParam @Nullable String name) {
 
         if (category != null && name != null) {
-
             return productService.getProducts()
                     .stream()
                     .filter(product -> product.getProductName().equals(name))
@@ -41,7 +40,6 @@ public class ProductRestController {
                     .toList();
         }
         if (category != null) {
-
             return productService.getProducts()
                     .stream()
                     .filter(product -> product.getCategory().equals(category))
@@ -49,7 +47,6 @@ public class ProductRestController {
                     .toList();
         }
         if (name != null) {
-
             return productService.getProducts()
                     .stream()
                     .filter(product -> product.getProductName().equals(name))
