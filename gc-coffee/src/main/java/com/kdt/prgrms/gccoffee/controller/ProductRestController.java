@@ -3,8 +3,9 @@ package com.kdt.prgrms.gccoffee.controller;
 
 import com.kdt.prgrms.gccoffee.dto.CreateProductRequest;
 import com.kdt.prgrms.gccoffee.dto.ProductResponse;
-import com.kdt.prgrms.gccoffee.models.Product;
+import com.kdt.prgrms.gccoffee.models.Category;
 import com.kdt.prgrms.gccoffee.service.ProductService;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,12 +29,36 @@ public class ProductRestController {
     }
 
     @GetMapping
-    public List<ProductResponse> getAllProducts() {
+    public List<ProductResponse> getAllProducts(@RequestParam @Nullable Category category, @RequestParam @Nullable String name) {
+
+        if (category != null && name != null) {
+
+            return productService.getProducts()
+                    .stream()
+                    .filter(product -> product.getProductName().equals(name))
+                    .filter(product -> product.getCategory().equals(category))
+                    .map(ProductResponse::from)
+                    .toList();
+        }
+        if (category != null) {
+
+            return productService.getProducts()
+                    .stream()
+                    .filter(product -> product.getCategory().equals(category))
+                    .map(ProductResponse::from)
+                    .toList();
+        }
+        if (name != null) {
+
+            return productService.getProducts()
+                    .stream()
+                    .filter(product -> product.getProductName().equals(name))
+                    .map(ProductResponse::from)
+                    .toList();
+        }
 
         return productService.getProducts().stream()
                 .map(ProductResponse::from)
                 .toList();
     }
-
-
 }
