@@ -1,14 +1,13 @@
 package com.kdt.prgrms.gccoffee.repository;
 
+import com.kdt.prgrms.gccoffee.models.Category;
 import com.kdt.prgrms.gccoffee.models.Product;
 import com.kdt.prgrms.gccoffee.repository.rowmapper.ProductRowMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class ProductJdbcRepository implements ProductRepository {
