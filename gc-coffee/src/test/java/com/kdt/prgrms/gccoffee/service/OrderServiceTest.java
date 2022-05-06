@@ -10,9 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import static org.mockito.Mockito.verify;
 
@@ -47,9 +46,7 @@ public class OrderServiceTest {
         @DisplayName("order 객체를 인자로 받으면")
         class ContextReceiveOrderObject {
 
-            List<OrderItem> items = List.of(new OrderItem(1, Category.COFFEE_BEAN_PACKAGE, 123, 3));
-
-            Order order = new Order(new UserEmail("adw@dad.com"), "경기도 구리시", "1323", items, OrderStatus.ACCEPTED);
+            Order order = new Order("adw@dad.com", "경기도 구리시", "1323", new ArrayList<>(), OrderStatus.ACCEPTED);
 
             @Test
             @DisplayName("repository의 save를 호출한다.")
@@ -58,7 +55,6 @@ public class OrderServiceTest {
                 orderService.createOrder(order);
 
                 verify(orderRepository).save(order);
-
             }
         }
     }

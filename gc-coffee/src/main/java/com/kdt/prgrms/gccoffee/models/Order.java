@@ -8,7 +8,7 @@ import java.util.List;
 public class Order {
 
     private final long orderId;
-    private final UserEmail email;
+    private final String email;
     private String address;
     private String postcode;
     private final List<OrderItem> orderItem;
@@ -18,7 +18,7 @@ public class Order {
     private LocalDateTime updatedAt;
 
     @JsonCreator
-    public Order(UserEmail email, String address, String postcode, List<OrderItem> orderItem, OrderStatus orderStatus) {
+    public Order(String email, String address, String postcode, List<OrderItem> orderItem, OrderStatus orderStatus) {
 
         this.orderId = 0;
         this.email = email;
@@ -30,7 +30,7 @@ public class Order {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Order(long orderId, UserEmail email, String address, String postcode, List<OrderItem> orderItem, OrderStatus orderStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Order(long orderId, String email, String address, String postcode, List<OrderItem> orderItem, OrderStatus orderStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
 
         this.orderId = orderId;
         this.email = email;
@@ -59,7 +59,7 @@ public class Order {
         return orderId;
     }
 
-    public UserEmail getEmail() {
+    public String getEmail() {
 
         return email;
     }

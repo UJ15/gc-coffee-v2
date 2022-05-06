@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @SpringBootTest
 @ContextConfiguration(classes = {OrderJdbcRepositoryTest.Config.class})
@@ -29,6 +29,7 @@ public class OrderJdbcRepositoryTest {
             return new OrderJdbcRepository(namedParameterJdbcTemplate);
         }
     }
+
     @Autowired
     private OrderJdbcRepository orderJdbcRepository;
 
@@ -42,9 +43,7 @@ public class OrderJdbcRepositoryTest {
         @DisplayName("인자로 null인 order를 받으면")
         class ContextReceiveNullOrder {
 
-
             com.kdt.prgrms.gccoffee.models.Order order = null;
-
 
             @Test
             @DisplayName("잘못된 인자 예외를 던진다.")
@@ -60,11 +59,7 @@ public class OrderJdbcRepositoryTest {
         @DisplayName("인자로 order를 받으면")
         class ContextReceiveOrder {
 
-            Product product = new Product("coffee", Category.COFFEE_BEAN_PACKAGE, 1000, "");
-
-            List<OrderItem> items = List.of(new OrderItem(1, Category.COFFEE_BEAN_PACKAGE, 1000, 1));
-
-            com.kdt.prgrms.gccoffee.models.Order order = new com.kdt.prgrms.gccoffee.models.Order(new UserEmail("adw@dad.com"), "경기도 구리시", "1323", items, OrderStatus.ACCEPTED);
+            com.kdt.prgrms.gccoffee.models.Order order = new com.kdt.prgrms.gccoffee.models.Order("adw@dad.com", "경기도 구리시", "1323", new ArrayList<>(), OrderStatus.ACCEPTED);
 
             @Test
             @DisplayName("해당 order를 Database에 저장한다.")
