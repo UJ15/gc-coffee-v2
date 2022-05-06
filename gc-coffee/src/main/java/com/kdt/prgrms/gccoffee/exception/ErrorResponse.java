@@ -12,7 +12,7 @@ public class ErrorResponse {
     private final String code;
     private final String message;
 
-    private ErrorResponse(Builder builder) {
+    private ErrorResponse(ErrorResponseBuilder builder) {
         this.status = builder.status;
         this.error = builder.error;
         this.code = builder.code;
@@ -31,32 +31,32 @@ public class ErrorResponse {
                         .build());
     }
 
-    public static class Builder {
+    public static class ErrorResponseBuilder {
 
         private int status;
         private String error;
         private String code;
         private String message;
 
-        private Builder status(int value) {
+        private ErrorResponseBuilder status(int value) {
 
             this.status = value;
             return this;
         }
 
-        private Builder error(String value) {
+        private ErrorResponseBuilder error(String value) {
 
             this.error = value;
             return this;
         }
 
-        private Builder code(String value) {
+        private ErrorResponseBuilder code(String value) {
 
             this.code = value;
             return this;
         }
 
-        private Builder message(String value) {
+        private ErrorResponseBuilder message(String value) {
 
             this.code = value;
             return this;
@@ -69,9 +69,9 @@ public class ErrorResponse {
 
     }
 
-    public static Builder builder() {
+    public static ErrorResponseBuilder builder() {
 
-        return new Builder();
+        return new ErrorResponseBuilder();
     }
 
 }
