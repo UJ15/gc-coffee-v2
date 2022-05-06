@@ -16,11 +16,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({MethodArgumentNotValidException.class, IllegalArgumentException.class})
     public ResponseEntity<ErrorResponse> handleMethodArgumentValidException() {
+
         logger.error("MethodArgumentValidException : {}", INVALID_INPUT_REQUEST);
         return ErrorResponse.toResponseEntity(INVALID_INPUT_REQUEST);
     }
-
-
-
-
 }
