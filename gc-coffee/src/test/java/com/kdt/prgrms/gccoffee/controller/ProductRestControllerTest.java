@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kdt.prgrms.gccoffee.GsonLocalDateTimeAdapter;
 import com.kdt.prgrms.gccoffee.dto.CreateProductRequest;
+import com.kdt.prgrms.gccoffee.dto.UpdateProductRequest;
 import com.kdt.prgrms.gccoffee.exception.custom.NotFoundException;
 import com.kdt.prgrms.gccoffee.models.Category;
 import com.kdt.prgrms.gccoffee.models.Product;
@@ -24,8 +25,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ProductRestController.class)
@@ -44,26 +44,6 @@ public class ProductRestControllerTest {
     @Nested
     @DisplayName("createProduct 메서드는")
     class DescribeCreateProduct {
-
-        @Nested
-        @DisplayName("생성 요청시 이름이 존재하지 않는 상품 생성 요청이 들어오면")
-        class ContextNotExistCategoryRequest {
-
-            String url = "/api/v1/products";
-
-            CreateProductRequest requestObject = new CreateProductRequest("", Category.COFFEE_BEAN_PACKAGE, 1, "");
-
-            MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(url)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(gson.toJson(requestObject));
-
-            @Test
-            @DisplayName("잘못된 요청 상태를 반환한다.")
-            void itReturnBadRequest() throws Exception {
-
-                mockMvc.perform(request).andExpect(status().isBadRequest());
-            }
-        }
 
         @Nested
         @DisplayName("생성 요청시 가격이 음수값인 상품 생성 요청이 들어오면")
@@ -341,6 +321,106 @@ public class ProductRestControllerTest {
                         .andExpect(status().isOk());
 
                 verify(productService).deleteProductById(inputId);
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("updateProductById 메서드는")
+    class DescribeUpdateProductById {
+
+        @Nested
+        @DisplayName("잘못된 id의 값을 인자로 받으면")
+        class ContextReceiveWrongId {
+
+            long id = -1;
+
+            String url = "/api/v1/products";
+
+            UpdateProductRequest requestObject = new UpdateProductRequest(id, "aa", Category.COFFEE_BEAN_PACKAGE, 1, "");
+
+            MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(gson.toJson(requestObject));
+
+            @Test
+            @DisplayName("Notfound 404 응답을 반환한다.")
+            void itReturnNotFoundException() throws Exception {
+
+                doThrow(NotFoundException.class).when(productService).updateProductById(any(long.class), any(Product.class));
+
+                mockMvc.perform(request)
+                        .andExpect(status().isNotFound());
+            }
+        }
+
+        @Nested
+        @DisplayName("생성 요청시 이름이 존재하지 않는 상품 생성 요청이 들어오면")
+        class ContextNullNameRequest {
+
+            String name = "";
+
+            String url = "/api/v1/products";
+
+            UpdateProductRequest requestObject = new UpdateProductRequest(1, name, Category.COFFEE_BEAN_PACKAGE, 1, "");
+
+            MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(gson.toJson(requestObject));
+
+            @Test
+            @DisplayName("잘못된 요청 상태를 반환한다.")
+            void itReturnBadRequest() throws Exception {
+
+                mockMvc.perform(request)
+                        .andExpect(status().isBadRequest());
+            }
+        }
+
+        @Nested
+        @DisplayName("생성 요청시 가격이 음수값인 상품 생성 요청이 들어오면")
+        class ContextNegativePriceRequest {
+
+            long price = -1;
+
+            String url = "/api/v1/products";
+
+            CreateProductRequest requestObject = new CreateProductRequest("a", Category.COFFEE_BEAN_PACKAGE, price, "");
+
+            MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(gson.toJson(requestObject));
+
+            @Test
+            @DisplayName("잘못된 요청 상태를 반환한다.")
+            void itReturnBadRequest() throws Exception {
+
+                mockMvc.perform(request).andExpect(status().isBadRequest());
+            }
+        }
+
+        @Nested
+        @DisplayName("저장되어 있는 id와 요청을 받으면")
+        class ContextSavedIdAndRequestBody {
+
+            long id = 1;
+
+            String url = "/api/v1/products";
+
+            UpdateProductRequest requestObject = new UpdateProductRequest(id, "aa", Category.COFFEE_BEAN_PACKAGE, 1, "");
+
+            MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(gson.toJson(requestObject));
+
+            @Test
+            @DisplayName("service의 updateProductById 메서드를 호출한다")
+            void itCallServiceUpdateProductById() throws Exception {
+
+                mockMvc.perform(request)
+                        .andExpect(status().isOk());
+
+                verify(productService).updateProductById(any(long.class), any(Product.class));
             }
         }
     }

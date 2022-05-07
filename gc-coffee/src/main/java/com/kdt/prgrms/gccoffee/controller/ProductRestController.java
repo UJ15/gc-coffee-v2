@@ -3,6 +3,7 @@ package com.kdt.prgrms.gccoffee.controller;
 
 import com.kdt.prgrms.gccoffee.dto.CreateProductRequest;
 import com.kdt.prgrms.gccoffee.dto.ProductResponse;
+import com.kdt.prgrms.gccoffee.dto.UpdateProductRequest;
 import com.kdt.prgrms.gccoffee.models.Category;
 import com.kdt.prgrms.gccoffee.models.Product;
 import com.kdt.prgrms.gccoffee.service.ProductService;
@@ -74,10 +75,10 @@ public class ProductRestController {
         productService.deleteProductById(id);
     }
 
-    @PutMapping("/{id}")
-    public void updateProductById(@PathVariable long id) {
+    @PutMapping
+    public void updateProductById(@RequestBody @Valid UpdateProductRequest productRequest) {
 
-
+        productService.updateProductById(productRequest.getProductId(), productRequest.toDomain());
     }
 
 

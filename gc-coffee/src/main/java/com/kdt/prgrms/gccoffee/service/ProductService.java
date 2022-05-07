@@ -5,6 +5,7 @@ import com.kdt.prgrms.gccoffee.models.Product;
 import com.kdt.prgrms.gccoffee.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -34,6 +35,19 @@ public class ProductService {
     public Product getProductById(long id) {
 
         return productRepository.findById(id).orElseThrow(NotFoundException::new);
+    }
+
+    public void updateProductById(long id, Product product) {
+
+        LocalDateTime createdAt = getProductById(id).getCreatedAt();
+        Product updateProduct = new Product(id,
+                product.getProductName(),
+                product.getCategory(),
+                product.getPrice(),
+                product.getDescription(),
+                createdAt,
+                product.getUpdatedAt());
+        productRepository.save(updateProduct);
     }
 
     public void deleteProductById(long id) {
