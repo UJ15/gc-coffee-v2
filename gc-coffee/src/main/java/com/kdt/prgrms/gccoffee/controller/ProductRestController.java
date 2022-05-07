@@ -4,6 +4,7 @@ package com.kdt.prgrms.gccoffee.controller;
 import com.kdt.prgrms.gccoffee.dto.CreateProductRequest;
 import com.kdt.prgrms.gccoffee.dto.ProductResponse;
 import com.kdt.prgrms.gccoffee.models.Category;
+import com.kdt.prgrms.gccoffee.models.Product;
 import com.kdt.prgrms.gccoffee.service.ProductService;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
@@ -59,9 +60,19 @@ public class ProductRestController {
                 .toList();
     }
 
+    @GetMapping("/{id}")
+    public ProductResponse getProductById(@PathVariable long id) {
+
+        Product product = productService.getProductById(id);
+
+        return ProductResponse.from(product);
+    }
+
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
+    public void deleteProductById(@PathVariable long id) {
 
         productService.deleteById(id);
     }
+
+
 }

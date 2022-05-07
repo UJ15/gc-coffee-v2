@@ -1,16 +1,24 @@
 package com.kdt.prgrms.gccoffee.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 
 public class ErrorResponse {
 
-    private final LocalDateTime timestamp = LocalDateTime.now();
     private final int status;
     private final String error;
     private final String code;
     private final String message;
+
+    public ErrorResponse(int status, String error, String code, String message) {
+
+        this.status = status;
+        this.error = error;
+        this.code = code;
+        this.message = message;
+    }
 
     private ErrorResponse(ErrorResponseBuilder builder) {
         this.status = builder.status;
@@ -58,7 +66,7 @@ public class ErrorResponse {
 
         private ErrorResponseBuilder message(String value) {
 
-            this.code = value;
+            this.message = value;
             return this;
         }
 
@@ -66,7 +74,6 @@ public class ErrorResponse {
 
             return new ErrorResponse(this);
         }
-
     }
 
     public static ErrorResponseBuilder builder() {
@@ -74,4 +81,23 @@ public class ErrorResponse {
         return new ErrorResponseBuilder();
     }
 
+    public int getStatus() {
+
+        return status;
+    }
+
+    public String getError() {
+
+        return error;
+    }
+
+    public String getCode() {
+
+        return code;
+    }
+
+    public String getMessage() {
+
+        return message;
+    }
 }

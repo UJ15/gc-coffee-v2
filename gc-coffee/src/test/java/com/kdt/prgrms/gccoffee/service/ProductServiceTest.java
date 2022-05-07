@@ -69,7 +69,7 @@ public class ProductServiceTest {
     }
 
     @Nested
-    @DisplayName("서비스의 createProduct 메서드는")
+    @DisplayName("서비스의 getProducts 메서드는")
     class DescribeGetProducts {
 
         @Nested
@@ -94,4 +94,6 @@ public class ProductServiceTest {
             }
         }
     }
+
+
 }

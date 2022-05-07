@@ -5,6 +5,7 @@ import com.kdt.prgrms.gccoffee.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -30,7 +31,12 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public void deleteById(Long id) {
+    public Product getProductById(long id) {
+
+        throw new IllegalArgumentException();
+    }
+
+    public void deleteById(long id) {
 
     }
 }
