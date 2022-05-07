@@ -14,7 +14,7 @@ public class ProductJdbcRepository implements ProductRepository {
             "VALUES(:productId, :productName, :category, :price, :description, :createdAt, :updatedAt)";
     private static final String SELECT_ALL_SQL = "SELECT * FROM products";
     private static final String LAST_ID_SQL = "SELECT LAST_INSERT_ID()";
-    private static final String FIND_BY_ID_SQL = "SELECT * FROM products WHERE product_id = :priductId";
+    private static final String FIND_BY_ID_SQL = "SELECT * FROM products WHERE product_id = :productId";
     private static final String DELETE_BY_ID_SQL = "DELETE FROM products WHERE product_id = :productId";
     private static final String UPDATE_BY_ID_SQL = "UPDATE products SET product_name = :productName, category = :category, price = :price, description = :description, updated_at = :updatedAt" +
             "WHERE product_id = :productId ";
@@ -47,7 +47,7 @@ public class ProductJdbcRepository implements ProductRepository {
     @Override
     public Optional<Product> findById(long id) {
 
-        return jdbcTemplate.query(FIND_BY_ID_SQL, new ProductRowMapper()).stream().findAny();
+        return jdbcTemplate.query(FIND_BY_ID_SQL, Collections.singletonMap("productId", id), new ProductRowMapper()).stream().findAny();
     }
 
     @Override

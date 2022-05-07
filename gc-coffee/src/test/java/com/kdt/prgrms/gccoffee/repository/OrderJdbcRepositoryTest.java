@@ -2,36 +2,52 @@ package com.kdt.prgrms.gccoffee.repository;
 
 
 import com.kdt.prgrms.gccoffee.models.*;
+import com.wix.mysql.EmbeddedMysql;
+import com.wix.mysql.ScriptResolver;
+import com.wix.mysql.config.Charset;
+import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Order;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.test.context.ContextConfiguration;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 
-@SpringBootTest
-@ContextConfiguration(classes = {OrderJdbcRepositoryTest.Config.class})
+import static com.wix.mysql.EmbeddedMysql.anEmbeddedMysql;
+import static com.wix.mysql.config.MysqldConfig.aMysqldConfig;
+import static com.wix.mysql.distribution.Version.v8_0_11;
+
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class OrderJdbcRepositoryTest {
 
-    @Configuration
-    @EnableAutoConfiguration
-    static class Config {
-        @Bean
-        public OrderJdbcRepository orderJdbcRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    static EmbeddedMysql embeddedMysql;
 
-            return new OrderJdbcRepository(namedParameterJdbcTemplate);
-        }
+    @BeforeAll
+    static void setup() {
+        var config= aMysqldConfig(v8_0_11)
+                .withCharset(Charset.UTF8)
+                .withPort(2215)
+                .withUser("test", "test1234!")
+                .build();
+        embeddedMysql = anEmbeddedMysql(config)
+                .addSchema("order_mgmt", ScriptResolver.classPathScript("schema-test.sql"))
+                .start();
     }
 
-    @Autowired
-    private OrderJdbcRepository orderJdbcRepository;
+    @AfterAll
+    static void cleanup() {
+        embeddedMysql.stop();
+    }
+
+    private final DataSource dataSource = DataSourceBuilder.create()
+            .url("jdbc:mysql://localhost:2215/order_mgmt")
+            .username("test")
+            .password("test1234!")
+            .type(HikariDataSource.class)
+            .build();
+    private OrderJdbcRepository orderJdbcRepository = new OrderJdbcRepository(new NamedParameterJdbcTemplate(dataSource));
 
     @Nested
     @Order(1)

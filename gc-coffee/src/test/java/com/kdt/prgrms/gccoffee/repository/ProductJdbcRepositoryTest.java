@@ -3,37 +3,54 @@ package com.kdt.prgrms.gccoffee.repository;
 
 import com.kdt.prgrms.gccoffee.models.Category;
 import com.kdt.prgrms.gccoffee.models.Product;
+import com.wix.mysql.EmbeddedMysql;
+import com.wix.mysql.ScriptResolver;
+import com.wix.mysql.config.Charset;
+import com.zaxxer.hikari.HikariDataSource;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
-@SpringBootTest
-@ContextConfiguration(classes = ProductJdbcRepositoryTest.Config.class)
+import static com.wix.mysql.EmbeddedMysql.anEmbeddedMysql;
+import static com.wix.mysql.config.MysqldConfig.aMysqldConfig;
+import static com.wix.mysql.distribution.Version.v8_0_11;
+
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProductJdbcRepositoryTest {
 
-    @Configuration
-    @EnableAutoConfiguration
-    static class Config {
-        @Bean
-        public ProductJdbcRepository productJdbcRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    static EmbeddedMysql embeddedMysql;
 
-            return new ProductJdbcRepository(namedParameterJdbcTemplate);
-        }
+    @BeforeAll
+    static void setup() {
+        var config= aMysqldConfig(v8_0_11)
+                .withCharset(Charset.UTF8)
+                .withPort(2215)
+                .withUser("test", "test1234!")
+                .build();
+        embeddedMysql = anEmbeddedMysql(config)
+                .addSchema("order_mgmt", ScriptResolver.classPathScript("schema-test.sql"))
+                .start();
     }
 
-    @Autowired
-    private ProductJdbcRepository productJdbcRepository;
+    @AfterAll
+    static void cleanup() {
+        embeddedMysql.stop();
+    }
+
+    private final DataSource dataSource = DataSourceBuilder.create()
+            .url("jdbc:mysql://localhost:2215/order_mgmt")
+            .username("test")
+            .password("test1234!")
+            .type(HikariDataSource.class)
+            .build();
+
+    private ProductJdbcRepository productJdbcRepository = new ProductJdbcRepository(new NamedParameterJdbcTemplate(dataSource));
 
     @Nested
     @Order(1)
@@ -69,6 +86,8 @@ public class ProductJdbcRepositoryTest {
 
                 Product productCheck = productJdbcRepository.save(product);
 
+                System.out.println(productCheck.getProductId());
+
                 Assertions.assertThat(productCheck.getProductName()).isEqualTo("coffee");
                 Assertions.assertThat(productCheck.getPrice()).isEqualTo(1000);
             }
@@ -85,12 +104,92 @@ public class ProductJdbcRepositoryTest {
         class ContextCallThis {
 
             @Test
-            @DisplayName("해당 product를 Database에 저장한다.")
-            void itSaveProduct() {
+            @DisplayName("해당 database의 product들을 리스트로 반환한다.")
+            void itReturnProducts() {
 
                 List<Product> products = productJdbcRepository.findAll();
 
                 Assertions.assertThat(products.size()).isNotEqualTo(0);
+            }
+        }
+    }
+
+    @Nested
+    @Order(3)
+    @DisplayName("findById 메서드는")
+    class DescribeFindById {
+
+        @Nested
+        @DisplayName("존재하지 않는 id를 인자로 받으면")
+        class ContextReceiveNotExistId {
+
+            long id = -1;
+
+            @Test
+            @DisplayName("비어있는 Optinal을 반환한다.")
+            void itReturnOptionalEmpty() {
+
+                Optional<Product> product = productJdbcRepository.findById(id);
+
+                Assertions.assertThat(product).isEqualTo(Optional.empty());
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하는 id를 인자로 받으면")
+        class ContextReceiveExistId {
+
+            long id = 1;
+
+            @Test
+            @DisplayName("해당 product를 Optianl로 반환한다.")
+            void itReturnOptionalProduct() {
+
+                Optional<Product> product = productJdbcRepository.findById(id);
+
+                Assertions.assertThat(product.isPresent()).isTrue();
+                Assertions.assertThat(product.get().getProductId()).isEqualTo(1);
+                Assertions.assertThat(product.get().getProductName()).isEqualTo("coffee");
+            }
+        }
+    }
+
+    @Nested
+    @Order(4)
+    @DisplayName("deleteById 메서드는")
+    class DescribeDeleteById {
+
+        @Nested
+        @DisplayName("존재하지 않는 id를 인자로 받으면")
+        class ContextReceiveNotExistId {
+
+            long id = -1;
+
+            @Test
+            @Order(1)
+            @DisplayName("서버 에러 예외를 반환한다.")
+            void itThrowIllegalStatementException() {
+
+                Assertions.assertThatThrownBy(() -> productJdbcRepository.deleteById(id))
+                        .isInstanceOf(IllegalStateException.class);
+            }
+        }
+
+        @Nested
+        @DisplayName("존재하는 id를 인자로 받으면")
+        class ContextReceiveExistId {
+
+            long id = 1;
+
+            @Test
+            @Order(2)
+            @DisplayName("해당 Id를 가진 product를 삭제한다.")
+            void itDeleteProduct() {
+
+                productJdbcRepository.deleteById(id);
+
+                Assertions.assertThatThrownBy(() -> productJdbcRepository.deleteById(id))
+                        .isInstanceOf(IllegalStateException.class);
             }
         }
     }
