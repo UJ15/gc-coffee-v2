@@ -50,7 +50,7 @@ public class ProductJdbcRepositoryTest {
             .type(HikariDataSource.class)
             .build();
 
-    private ProductJdbcRepository productJdbcRepository = new ProductJdbcRepository(new NamedParameterJdbcTemplate(dataSource));
+    private final ProductJdbcRepository productJdbcRepository = new ProductJdbcRepository(new NamedParameterJdbcTemplate(dataSource));
 
     @Nested
     @Order(1)
@@ -75,7 +75,7 @@ public class ProductJdbcRepositoryTest {
 
         @Nested
         @Order(2)
-        @DisplayName("인자로 product를 받으면")
+        @DisplayName("인자로 id 가 0인 product를 받으면")
         class ContextReceiveProduct {
 
             Product product = new Product("coffee", Category.COFFEE_BEAN_PACKAGE, 1000, "");
@@ -86,12 +86,30 @@ public class ProductJdbcRepositoryTest {
 
                 Product productCheck = productJdbcRepository.save(product);
 
-                System.out.println(productCheck.getProductId());
-
                 Assertions.assertThat(productCheck.getProductName()).isEqualTo("coffee");
                 Assertions.assertThat(productCheck.getPrice()).isEqualTo(1000);
             }
         }
+
+        @Nested
+        @Order(2)
+        @DisplayName("인자로 id 가 0이 아닌 product를 받으면")
+        class ContextReceiveExistIdProduct {
+
+            Product product = new Product("coffee", Category.COFFEE_BEAN_PACKAGE, 1001, "");
+            Product updateProduct = Product.toEntity(1, product);
+            @Test
+            @DisplayName("해당 product를 update한다.")
+            void itUpdateProduct() {
+
+                Product productCheck = productJdbcRepository.save(updateProduct);
+
+                Assertions.assertThat(productCheck.getProductName()).isEqualTo("coffee");
+                Assertions.assertThat(productCheck.getPrice()).isEqualTo(1001);
+            }
+        }
+
+
     }
 
     @Nested

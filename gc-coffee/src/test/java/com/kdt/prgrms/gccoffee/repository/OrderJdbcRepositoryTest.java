@@ -47,7 +47,7 @@ public class OrderJdbcRepositoryTest {
             .password("test1234!")
             .type(HikariDataSource.class)
             .build();
-    private OrderJdbcRepository orderJdbcRepository = new OrderJdbcRepository(new NamedParameterJdbcTemplate(dataSource));
+    private final OrderJdbcRepository orderJdbcRepository = new OrderJdbcRepository(new NamedParameterJdbcTemplate(dataSource));
 
     @Nested
     @Order(1)

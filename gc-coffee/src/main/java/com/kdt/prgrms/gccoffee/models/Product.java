@@ -35,7 +35,7 @@ public class Product {
         this.updatedAt = updatedAt;
     }
 
-    public static Product toEntity(Long id, Product product) {
+    public static Product toEntity(long id, Product product) {
 
         return new Product(id,
                 product.getProductName(),

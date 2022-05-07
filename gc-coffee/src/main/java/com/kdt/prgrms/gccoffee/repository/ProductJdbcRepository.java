@@ -16,7 +16,7 @@ public class ProductJdbcRepository implements ProductRepository {
     private static final String LAST_ID_SQL = "SELECT LAST_INSERT_ID()";
     private static final String FIND_BY_ID_SQL = "SELECT * FROM products WHERE product_id = :productId";
     private static final String DELETE_BY_ID_SQL = "DELETE FROM products WHERE product_id = :productId";
-    private static final String UPDATE_BY_ID_SQL = "UPDATE products SET product_name = :productName, category = :category, price = :price, description = :description, updated_at = :updatedAt" +
+    private static final String UPDATE_BY_ID_SQL = "UPDATE products SET product_name = :productName, category = :category, price = :price, description = :description, updated_at = :updatedAt " +
             "WHERE product_id = :productId ";
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
