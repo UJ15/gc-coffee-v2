@@ -37,17 +37,16 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
-    public void updateProductById(long id, Product product) {
+    public Product updateProductById(long id, Product product) {
 
-        LocalDateTime createdAt = getProductById(id).getCreatedAt();
-        Product updateProduct = new Product(id,
-                product.getProductName(),
-                product.getCategory(),
-                product.getPrice(),
-                product.getDescription(),
-                createdAt,
-                product.getUpdatedAt());
-        productRepository.save(updateProduct);
+        if (product == null) {
+            throw new IllegalArgumentException();
+        }
+
+        getProductById(id);
+        Product updateProduct = Product.toEntity(id, product);
+        
+        return productRepository.save(updateProduct);
     }
 
     public void deleteProductById(long id) {
