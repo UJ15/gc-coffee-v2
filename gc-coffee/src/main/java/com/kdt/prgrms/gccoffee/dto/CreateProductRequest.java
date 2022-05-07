@@ -7,19 +7,21 @@ import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class CreateProductRequest {
 
     @NotBlank
+    @NotNull
     private final String productName;
-    @NonNull
+    @NotNull
     private final Category category;
     @Min(0)
     private final long price;
     private final String description;
 
     @JsonCreator
-    public CreateProductRequest(@NotBlank String productName, @NonNull Category category, long price, String description) {
+    public CreateProductRequest(@NotBlank String productName, @NotNull Category category, long price, String description) {
 
         this.productName = productName;
         this.category = category;

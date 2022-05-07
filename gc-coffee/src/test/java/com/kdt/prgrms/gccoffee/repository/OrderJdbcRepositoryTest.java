@@ -6,6 +6,7 @@ import com.wix.mysql.EmbeddedMysql;
 import com.wix.mysql.ScriptResolver;
 import com.wix.mysql.config.Charset;
 import com.zaxxer.hikari.HikariDataSource;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Order;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -65,7 +66,7 @@ public class OrderJdbcRepositoryTest {
             @DisplayName("잘못된 인자 예외를 던진다.")
             void itThrowIllegalArgumentException() {
 
-                org.assertj.core.api.Assertions.assertThatThrownBy(() -> orderJdbcRepository.save(order))
+                Assertions.assertThatThrownBy(() -> orderJdbcRepository.save(order))
                         .isInstanceOf(IllegalArgumentException.class);
             }
         }
@@ -83,8 +84,8 @@ public class OrderJdbcRepositoryTest {
 
                 com.kdt.prgrms.gccoffee.models.Order orderCheck = orderJdbcRepository.save(order);
 
-                org.assertj.core.api.Assertions.assertThat(orderCheck.getAddress()).isEqualTo("경기도 구리시");
-                org.assertj.core.api.Assertions.assertThat(orderCheck.getPostcode()).isEqualTo("1323");
+                Assertions.assertThat(orderCheck.getAddress()).isEqualTo("경기도 구리시");
+                Assertions.assertThat(orderCheck.getPostcode()).isEqualTo("1323");
             }
         }
     }

@@ -39,6 +39,72 @@ public class OrderRestControllerTest {
     class DescribeCreateOrder {
 
         @Nested
+        @DisplayName("잘못된 email로 post요청을 받으면")
+        class ContextWrongEmailCreateRequestOrder {
+
+            String url = "/api/v1/orders";
+            List<OrderItem> items = List.of(new OrderItem(1, Category.COFFEE_BEAN_PACKAGE, 123, 3));
+
+            CreateOrderRequest requestObject = new CreateOrderRequest("adwdad", "경기도 구리시", "1323", items);
+
+            MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(gson.toJson(requestObject));
+
+            @Test
+            @DisplayName("잘못된 요청 응답을 보낸다.")
+            void itReturnBadRequest() throws Exception {
+
+                mockMvc.perform(request)
+                        .andExpect(status().isBadRequest());
+            }
+        }
+
+        @Nested
+        @DisplayName("주소가 빈값인 요청을 받으면")
+        class ContextWhiteSpaceAddressCreateRequestOrder {
+
+            String url = "/api/v1/orders";
+            List<OrderItem> items = List.of(new OrderItem(1, Category.COFFEE_BEAN_PACKAGE, 123, 3));
+
+            CreateOrderRequest requestObject = new CreateOrderRequest("dasd@dwojd.com", "", "1323", items);
+
+            MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(gson.toJson(requestObject));
+
+            @Test
+            @DisplayName("잘못된 요청 응답을 보낸다.")
+            void itReturnBadRequest() throws Exception {
+
+                mockMvc.perform(request)
+                        .andExpect(status().isBadRequest());
+            }
+        }
+
+        @Nested
+        @DisplayName("PostCode가 빈값인 요청을 받으면")
+        class ContextWhiteSpacePostCodeCreateRequestOrder {
+
+            String url = "/api/v1/orders";
+            List<OrderItem> items = List.of(new OrderItem(1, Category.COFFEE_BEAN_PACKAGE, 123, 3));
+
+            CreateOrderRequest requestObject = new CreateOrderRequest("dasd@dwojd.com", "경기도 구리시", "", items);
+
+            MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(gson.toJson(requestObject));
+
+            @Test
+            @DisplayName("잘못된 요청 응답을 보낸다.")
+            void itReturnBadRequest() throws Exception {
+
+                mockMvc.perform(request)
+                        .andExpect(status().isBadRequest());
+            }
+        }
+
+        @Nested
         @DisplayName("해당 api로 post요청을 받으면")
         class ContextCallServiceCreateOrder {
 
@@ -55,7 +121,8 @@ public class OrderRestControllerTest {
             @DisplayName("ok 응답을 보내고 service의 createOrder메서드를 호출한다.")
             void itReturnBadRequest() throws Exception {
 
-                mockMvc.perform(request).andExpect(status().isOk());
+                mockMvc.perform(request)
+                        .andExpect(status().isOk());
 
                 verify(orderService).createOrder(any(Order.class));
             }

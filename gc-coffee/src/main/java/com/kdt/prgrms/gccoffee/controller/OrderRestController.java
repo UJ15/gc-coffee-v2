@@ -4,6 +4,8 @@ import com.kdt.prgrms.gccoffee.dto.CreateOrderRequest;
 import com.kdt.prgrms.gccoffee.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/orders")
 public class OrderRestController {
@@ -16,7 +18,7 @@ public class OrderRestController {
     }
 
     @PostMapping
-    public void createOrder(@RequestBody CreateOrderRequest orderRequest) {
+    public void createOrder(@RequestBody @Valid CreateOrderRequest orderRequest) {
 
         orderService.createOrder(orderRequest.toDomain());
     }

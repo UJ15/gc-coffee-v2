@@ -7,14 +7,21 @@ import com.kdt.prgrms.gccoffee.models.OrderStatus;
 
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class CreateOrderRequest {
 
     @Email
     private final String email;
+    @NotBlank
+    @NotNull
     private final String address;
+    @NotNull
+    @NotBlank
     private final String postcode;
+    @NotNull
     private final List<OrderItem> orderItems;
 
     @JsonCreator
