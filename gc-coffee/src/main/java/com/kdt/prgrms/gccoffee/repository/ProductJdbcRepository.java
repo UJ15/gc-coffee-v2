@@ -14,6 +14,8 @@ public class ProductJdbcRepository implements ProductRepository {
             + "VALUES(:productId, :productName, :category, :price, :description, :createdAt, :updatedAt)";
     private static final String SELECT_ALL_SQL = "SELECT * FROM products";
     private static final String LAST_ID_SQL = "SELECT LAST_INSERT_ID()";
+    private static final String FIND_BY_ID_SQL = "SELECT * FROM products WHERE product_id = :priductId";
+    private static final String DELETE_BY_ID_SQL = "DELETE FROM products WHERE product_id = :productId";
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -41,9 +43,15 @@ public class ProductJdbcRepository implements ProductRepository {
     }
 
     @Override
+    public Optional<Product> findById(long id) {
+
+        return jdbcTemplate.query(FIND_BY_ID_SQL, new ProductRowMapper()).stream().findAny();
+    }
+
+    @Override
     public void deleteById(long id) {
 
-        int update = jdbcTemplate.update("DELETE FROM products WHERE product_id = :productId", Collections.singletonMap("productId", id));
+        int update = jdbcTemplate.update(DELETE_BY_ID_SQL, Collections.singletonMap("productId", id));
 
         if (update != 1){
             throw new IllegalStateException();

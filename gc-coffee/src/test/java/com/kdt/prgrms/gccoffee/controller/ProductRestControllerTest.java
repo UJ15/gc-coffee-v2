@@ -315,10 +315,10 @@ public class ProductRestControllerTest {
             String url = "/api/v1/products/-1";
 
             @Test
-            @DisplayName("잘못된 인자 에러를 반환한다.")
+            @DisplayName("찾을 수 없음 에러를 반환한다.")
             void itReturnIllegalArgument() throws Exception {
 
-                doThrow(NotFoundException.class).when(productService).deleteById(id);
+                doThrow(NotFoundException.class).when(productService).deleteProductById(id);
 
                 mockMvc.perform(delete(url))
                         .andExpect(status().isNotFound());
@@ -340,7 +340,7 @@ public class ProductRestControllerTest {
                 mockMvc.perform(delete(url))
                         .andExpect(status().isOk());
 
-                verify(productService).deleteById(inputId);
+                verify(productService).deleteProductById(inputId);
             }
         }
     }

@@ -1,11 +1,11 @@
 package com.kdt.prgrms.gccoffee.service;
 
+import com.kdt.prgrms.gccoffee.exception.custom.NotFoundException;
 import com.kdt.prgrms.gccoffee.models.Product;
 import com.kdt.prgrms.gccoffee.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -33,10 +33,12 @@ public class ProductService {
 
     public Product getProductById(long id) {
 
-        throw new IllegalArgumentException();
+        return productRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
-    public void deleteById(long id) {
+    public void deleteProductById(long id) {
 
+        getProductById(id);
+        productRepository.deleteById(id);
     }
 }

@@ -8,8 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static com.kdt.prgrms.gccoffee.exception.ErrorCode.INVALID_INPUT_REQUEST;
-import static com.kdt.prgrms.gccoffee.exception.ErrorCode.NOT_FOUNT;
+import static com.kdt.prgrms.gccoffee.exception.ErrorCode.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -30,5 +29,12 @@ public class GlobalExceptionHandler {
 
         logger.error("NotFoundException : {}", NOT_FOUNT);
         return ErrorResponse.toResponseEntity(NOT_FOUNT);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalStateException() {
+
+        logger.error("IllegalStateException : {}", SERVER_ERROR);
+        return ErrorResponse.toResponseEntity(SERVER_ERROR);
     }
 }
