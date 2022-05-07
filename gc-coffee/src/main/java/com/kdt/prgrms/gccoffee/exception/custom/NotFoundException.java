@@ -11,12 +11,6 @@ public class NotFoundException extends RuntimeException {
 
     }
 
-    public NotFoundException(HttpStatus status, String message) {
-
-        this.status = status;
-        this.message = message;
-    }
-
     @Override
     public String getMessage() {
 
