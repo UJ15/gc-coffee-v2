@@ -41,24 +41,4 @@ public class CreateOrderRequest {
                 this.orderItems,
                 OrderStatus.ACCEPTED);
     }
-
-    public String getEmail() {
-
-        return email;
-    }
-
-    public String getAddress() {
-
-        return address;
-    }
-
-    public String getPostcode() {
-
-        return postcode;
-    }
-
-    public List<OrderItem> getOrderItems() {
-
-        return orderItems;
-    }
 }

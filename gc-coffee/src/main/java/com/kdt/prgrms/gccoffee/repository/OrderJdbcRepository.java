@@ -17,8 +17,8 @@ public class OrderJdbcRepository implements OrderRepository {
 
     private static final String ORDER_INSERT_SQL = "INSERT INTO orders(order_id, email, address, postcode, order_status, created_at, updated_at)" +
             "VALUES(:orderId, :email, :address, :postcode, :orderStatus, :createdAt, :updatedAt)";
-    private static final String ITEM_INSERT_SQL = "INSERT INTO order_items(order_id, product_id, category, price, quantity, created_at, updated_at) " +
-            " VALUES (:orderId, :productId, :category, :price, :quantity, :createdAt, :updatedAt)";
+    private static final String ITEM_INSERT_SQL = "INSERT INTO order_items(order_id, product_id, quantity, created_at, updated_at) " +
+            " VALUES (:orderId, :productId, :quantity, :createdAt, :updatedAt)";
     private static final String LAST_ID_SQL = "SELECT LAST_INSERT_ID()";
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
@@ -87,8 +87,6 @@ public class OrderJdbcRepository implements OrderRepository {
 
         paramMap.put("orderId", orderId);
         paramMap.put("productId", item.getProductId());
-        paramMap.put("category", item.getCategory().toString());
-        paramMap.put("price", item.getPrice());
         paramMap.put("quantity", item.getQuantity());
         paramMap.put("createdAt", createdAt);
         paramMap.put("updatedAt", updatedAt);

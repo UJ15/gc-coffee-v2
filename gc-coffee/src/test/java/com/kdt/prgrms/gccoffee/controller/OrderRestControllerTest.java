@@ -43,7 +43,7 @@ public class OrderRestControllerTest {
         class ContextWrongEmailCreateRequestOrder {
 
             String url = "/api/v1/orders";
-            List<OrderItem> items = List.of(new OrderItem(1, Category.COFFEE_BEAN_PACKAGE, 123, 3));
+            List<OrderItem> items = List.of(new OrderItem(1,  3));
 
             CreateOrderRequest requestObject = new CreateOrderRequest("adwdad", "경기도 구리시", "1323", items);
 
@@ -65,7 +65,7 @@ public class OrderRestControllerTest {
         class ContextWhiteSpaceAddressCreateRequestOrder {
 
             String url = "/api/v1/orders";
-            List<OrderItem> items = List.of(new OrderItem(1, Category.COFFEE_BEAN_PACKAGE, 123, 3));
+            List<OrderItem> items = List.of(new OrderItem(1, 3));
 
             CreateOrderRequest requestObject = new CreateOrderRequest("dasd@dwojd.com", "", "1323", items);
 
@@ -87,7 +87,7 @@ public class OrderRestControllerTest {
         class ContextWhiteSpacePostCodeCreateRequestOrder {
 
             String url = "/api/v1/orders";
-            List<OrderItem> items = List.of(new OrderItem(1, Category.COFFEE_BEAN_PACKAGE, 123, 3));
+            List<OrderItem> items = List.of(new OrderItem(1, 3));
 
             CreateOrderRequest requestObject = new CreateOrderRequest("dasd@dwojd.com", "경기도 구리시", "", items);
 
@@ -109,7 +109,7 @@ public class OrderRestControllerTest {
         class ContextCallServiceCreateOrder {
 
             String url = "/api/v1/orders";
-            List<OrderItem> items = List.of(new OrderItem(1, Category.COFFEE_BEAN_PACKAGE, 123, 3));
+            List<OrderItem> items = List.of(new OrderItem(1, 3));
 
             CreateOrderRequest requestObject = new CreateOrderRequest("adw@dad.com", "경기도 구리시", "1323", items);
 
