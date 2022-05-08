@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 
 public class UpdateProductRequest {
 
-    private final long productId;
     @NotBlank
     private final String productName;
     @NonNull
@@ -20,9 +19,8 @@ public class UpdateProductRequest {
     private final String description;
 
     @JsonCreator
-    public UpdateProductRequest(long productId, @NotBlank String productName, @NonNull Category category, long price, String description) {
+    public UpdateProductRequest(@NotBlank String productName, @NonNull Category category, long price, String description) {
 
-        this.productId = productId;
         this.productName = productName;
         this.category = category;
         this.price = price;
@@ -32,9 +30,5 @@ public class UpdateProductRequest {
     public Product toDomain() {
 
         return new Product(this.productName, this.category, this.price, this.description);
-    }
-
-    public long getProductId() {
-        return productId;
     }
 }

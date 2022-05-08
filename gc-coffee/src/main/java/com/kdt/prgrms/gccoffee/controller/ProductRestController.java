@@ -75,10 +75,10 @@ public class ProductRestController {
         productService.deleteProductById(id);
     }
 
-    @PutMapping
-    public void updateProductById(@RequestBody @Valid UpdateProductRequest productRequest) {
+    @PutMapping("/{id}")
+    public void updateProductById(@PathVariable long id, @RequestBody @Valid UpdateProductRequest productRequest) {
 
-        productService.updateProductById(productRequest.getProductId(), productRequest.toDomain());
+        productService.updateProductById(id, productRequest.toDomain());
     }
 
 

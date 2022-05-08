@@ -4,6 +4,7 @@ import com.kdt.prgrms.gccoffee.models.Order;
 import com.kdt.prgrms.gccoffee.models.OrderItem;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -27,6 +28,7 @@ public class OrderJdbcRepository implements OrderRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Transactional
     @Override
     public Order save(Order order) {
 
@@ -69,7 +71,7 @@ public class OrderJdbcRepository implements OrderRepository {
         HashMap<String, Object> paramMap = new HashMap<>();
 
         paramMap.put("orderId", order.getOrderId());
-        paramMap.put("email", order.getEmail().toString());
+        paramMap.put("email", order.getEmail());
         paramMap.put("address", order.getAddress());
         paramMap.put("postcode", order.getPostcode());
         paramMap.put("orderStatus", order.getOrderStatus().toString());

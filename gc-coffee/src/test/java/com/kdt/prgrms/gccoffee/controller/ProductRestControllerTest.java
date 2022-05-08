@@ -333,11 +333,10 @@ public class ProductRestControllerTest {
         @DisplayName("잘못된 id의 값을 인자로 받으면")
         class ContextReceiveWrongId {
 
-            long id = -1;
 
-            String url = "/api/v1/products";
+            String url = "/api/v1/products/1";
 
-            UpdateProductRequest requestObject = new UpdateProductRequest(id, "aa", Category.COFFEE_BEAN_PACKAGE, 1, "");
+            UpdateProductRequest requestObject = new UpdateProductRequest("aa", Category.COFFEE_BEAN_PACKAGE, 1, "");
 
             MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(url)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -360,9 +359,9 @@ public class ProductRestControllerTest {
 
             String name = "";
 
-            String url = "/api/v1/products";
+            String url = "/api/v1/products/1";
 
-            UpdateProductRequest requestObject = new UpdateProductRequest(1, name, Category.COFFEE_BEAN_PACKAGE, 1, "");
+            UpdateProductRequest requestObject = new UpdateProductRequest(name, Category.COFFEE_BEAN_PACKAGE, 1, "");
 
             MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(url)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -403,11 +402,9 @@ public class ProductRestControllerTest {
         @DisplayName("저장되어 있는 id와 요청을 받으면")
         class ContextSavedIdAndRequestBody {
 
-            long id = 1;
+            String url = "/api/v1/products/1";
 
-            String url = "/api/v1/products";
-
-            UpdateProductRequest requestObject = new UpdateProductRequest(id, "aa", Category.COFFEE_BEAN_PACKAGE, 1, "");
+            UpdateProductRequest requestObject = new UpdateProductRequest("aa", Category.COFFEE_BEAN_PACKAGE, 1, "");
 
             MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(url)
                     .contentType(MediaType.APPLICATION_JSON)
