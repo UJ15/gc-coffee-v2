@@ -76,7 +76,11 @@ public class ProductJdbcRepository implements ProductRepository {
 
     private Product updateProduct(Product product) {
 
-        jdbcTemplate.update(UPDATE_BY_ID_SQL, toParamMap(product));
+        int update = jdbcTemplate.update(UPDATE_BY_ID_SQL, toParamMap(product));
+
+        if (update != 1) {
+            throw new IllegalStateException();
+        }
 
         return product;
     }
