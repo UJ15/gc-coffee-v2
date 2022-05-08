@@ -86,17 +86,18 @@ public class ProductJdbcRepositoryTest {
 
                 Product productCheck = productJdbcRepository.save(product);
 
+                Assertions.assertThat(productCheck.getProductId()).isEqualTo(1);
                 Assertions.assertThat(productCheck.getProductName()).isEqualTo("coffee");
                 Assertions.assertThat(productCheck.getPrice()).isEqualTo(1000);
             }
         }
 
         @Nested
-        @Order(2)
+        @Order(3)
         @DisplayName("인자로 id 가 0이 아닌 product를 받으면")
         class ContextReceiveExistIdProduct {
 
-            Product product = new Product("coffee", Category.COFFEE_BEAN_PACKAGE, 1001, "");
+            Product product = new Product("coffei", Category.COFFEE_BEAN_PACKAGE, 1001, "");
             Product updateProduct = Product.toEntity(1, product);
             @Test
             @DisplayName("해당 product를 update한다.")
@@ -104,7 +105,7 @@ public class ProductJdbcRepositoryTest {
 
                 Product productCheck = productJdbcRepository.save(updateProduct);
 
-                Assertions.assertThat(productCheck.getProductName()).isEqualTo("coffee");
+                Assertions.assertThat(productCheck.getProductName()).isEqualTo("coffei");
                 Assertions.assertThat(productCheck.getPrice()).isEqualTo(1001);
             }
         }
@@ -167,7 +168,7 @@ public class ProductJdbcRepositoryTest {
 
                 Assertions.assertThat(product.isPresent()).isTrue();
                 Assertions.assertThat(product.get().getProductId()).isEqualTo(1);
-                Assertions.assertThat(product.get().getProductName()).isEqualTo("coffee");
+                Assertions.assertThat(product.get().getProductName()).isEqualTo("coffei");
             }
         }
     }
