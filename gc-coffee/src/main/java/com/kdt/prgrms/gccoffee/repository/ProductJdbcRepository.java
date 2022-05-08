@@ -68,7 +68,8 @@ public class ProductJdbcRepository implements ProductRepository {
             throw new IllegalStateException();
         }
 
-        Long id = jdbcTemplate.queryForObject(LAST_ID_SQL, Collections.emptyMap(), Long.class);
+        long id = Optional.ofNullable(jdbcTemplate.queryForObject(LAST_ID_SQL, Collections.emptyMap(), long.class))
+                .orElseThrow(IllegalStateException::new);
 
         return Product.toEntity(id, product);
     }

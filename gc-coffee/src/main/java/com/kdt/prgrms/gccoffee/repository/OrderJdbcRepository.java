@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class OrderJdbcRepository implements OrderRepository {
@@ -51,12 +52,13 @@ public class OrderJdbcRepository implements OrderRepository {
             throw new IllegalStateException();
         }
 
-        Long id = jdbcTemplate.queryForObject(LAST_ID_SQL, Collections.emptyMap(), Long.class);
+        long id = Optional.ofNullable(jdbcTemplate.queryForObject(LAST_ID_SQL, Collections.emptyMap(), long.class))
+                .orElseThrow(IllegalStateException::new);
 
         order.getOrderItem()
                 .forEach(
                         item -> jdbcTemplate.update(ITEM_INSERT_SQL,
-                                toOrderItemParamMap(order.getOrderId(), order.getCreatedAt(), order.getUpdatedAt(), item))
+                                toOrderItemParamMap(id, order.getCreatedAt(), order.getUpdatedAt(), item))
                 );
 
         return Order.toEntity(id, order);
