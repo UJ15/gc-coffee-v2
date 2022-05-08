@@ -13,7 +13,10 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.wix.mysql.EmbeddedMysql.anEmbeddedMysql;
@@ -50,7 +53,10 @@ public class ProductJdbcRepositoryTest {
             .type(HikariDataSource.class)
             .build();
 
-    private final ProductJdbcRepository productJdbcRepository = new ProductJdbcRepository(new NamedParameterJdbcTemplate(dataSource));
+    private final NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    private final ProductJdbcRepository productJdbcRepository = new ProductJdbcRepository(jdbcTemplate);
+
+
 
     @Nested
     @Order(1)
