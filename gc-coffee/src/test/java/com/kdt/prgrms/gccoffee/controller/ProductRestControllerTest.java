@@ -334,7 +334,7 @@ public class ProductRestControllerTest {
         class ContextReceiveWrongId {
 
 
-            String url = "/api/v1/products/1";
+            String url = "/api/v1/products/-1";
 
             UpdateProductRequest requestObject = new UpdateProductRequest("aa", Category.COFFEE_BEAN_PACKAGE, 1, "");
 
